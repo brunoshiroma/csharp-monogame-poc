@@ -2,12 +2,16 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GameCore;
+using System.Linq;
 
 namespace csharp_monogame_poc;
 
 public class Game1 : Core
 {
     private Texture2D nave;
+
+    private Vector2 spritePosition = Vector2.Zero;
+    protected float spriteScale = 0.5f;
 
     public Game1() : base("Galaxia", 1280, 720, false)
     {
@@ -33,6 +37,22 @@ public class Game1 : Core
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
+        if (GamePad.GetState(PlayerIndex.One).DPad.Up == ButtonState.Pressed || Keyboard.GetState().GetPressedKeys().Contains(Keys.Up))
+        {
+            if (spriteScale <= 1f)
+            {
+                spriteScale += 0.1f;
+
+            }
+        }
+        if (GamePad.GetState(PlayerIndex.One).DPad.Down == ButtonState.Pressed || Keyboard.GetState().GetPressedKeys().Contains(Keys.Down))
+        {
+            if (spriteScale >= 0f)
+            {
+                spriteScale -= 0.1f;
+
+            }
+        }
         // TODO: Add your update logic here
 
         base.Update(gameTime);
@@ -48,7 +68,7 @@ public class Game1 : Core
 
 
         SpriteBatch.Begin();
-        SpriteBatch.Draw(nave, Vector2.Zero, Color.White);
+        SpriteBatch.Draw(nave, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0f);
         SpriteBatch.End();
     }
 }
